@@ -1,9 +1,13 @@
 :root {
-  --primary: #0a8143;
-  --secondary: #f4f6f9;
-  --text: #efebeb;
+  --bg: #0b1110;            /* fond général sombre */
+  --bg-elevated: #141c1b;   /* blocs en surépaisseur */
+  --primary: #7bcf8b;       /* vert principal (texte, titres) */
+  --primary-soft: #3a6b4a;  /* vert foncé pour détails */
+  --accent: #e4f6ea;        /* blanc/vert très clair */
+  --text: #f5f7f6;          /* texte principal clair */
 }
 
+/* Reset simple */
 * {
   box-sizing: border-box;
 }
@@ -12,75 +16,274 @@ body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--text);
-  background: #fff;
+  background: radial-gradient(circle at top, #182723 0, var(--bg) 45%);
   line-height: 1.5;
 }
 
+/* En-tête */
 header {
-  background: var(--primary);
+  background: rgba(10, 16, 15, 0.9);
+  backdrop-filter: blur(10px);
   color: #fff;
-  padding: 1rem 1.5rem;
+  padding: 0.9rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(123, 207, 139, 0.25);
 }
 
 header .brand {
-  font-size: 1.4rem;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
+/* Navigation */
 nav {
-  margin-top: 0.5rem;
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 0.4rem;
 }
 
 nav a {
-  color: #fff;
+  color: #fdfdfd;
   text-decoration: none;
-  margin-right: 1rem;
   font-size: 0.95rem;
+  padding: 0.2rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 nav a:hover {
-  text-decoration: underline;
+  background: rgba(123, 207, 139, 0.12);
+  border-color: rgba(123, 207, 139, 0.4);
 }
 
+/* Contenu principal */
 main {
   max-width: 960px;
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: 1.6rem 1.5rem 2rem;
 }
 
+/* Sections */
 section {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+}
+h1{
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    font-weight: 700;
 }
 
-h1,
+
 h2,
 h3 {
   color: var(--primary);
   margin-top: 0;
+  font-weight: 700;
 }
 
+p {
+  color: #dde3e1;
+}
+
+/* Bandeau de présentation */
 .hero {
-  background: var(--secondary);
-  padding: 1.5rem;
-  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(20, 28, 27, 0.95), rgba(11, 17, 16, 0.98));
+  padding: 1.8rem;
+  border-radius: 16px;
+  border: 1px solid rgba(123, 207, 139, 0.2);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
 }
 
+/* Images dans l’histoire */
+.image-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.image-row img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  object-fit: cover;
+  filter: saturate(1.1) contrast(1.05);
+}
+
+.image-row figure {
+  margin: 0;
+}
+
+.image-row figcaption {
+  font-size: 0.85rem;
+  color: #c4cec9;
+  margin-top: 0.3rem;
+}
+/* Timeline (histoire du club) */
+.timeline {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.timeline-item {
+  position: relative;
+}
+
+.timeline-content {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+  align-items: center;
+  background: rgba(20, 28, 27, 0.9);
+  border-radius: 14px;
+  border: 1px solid rgba(123, 207, 139, 0.2);
+  padding: 1rem 1.2rem;
+}
+
+.timeline-image img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  filter: saturate(1.1) contrast(1.05);
+}
+
+.timeline-text h3 {
+  margin-top: 0;
+  margin-bottom: 0.4rem;
+  color: var(--primary);
+}
+
+.timeline-text p {
+  margin: 0;
+  color: #dde3e1;
+}
+
+/* Position gauche/droite (alternance) */
+.timeline-item.left .timeline-content {
+  grid-auto-flow: column;
+}
+
+.timeline-item.right .timeline-content {
+  grid-auto-flow: column;
+}
+
+/* Flèche vers le bas entre les blocs */
+.timeline-arrow {
+  text-align: center;
+  margin-top: 0.4rem;
+  font-size: 1.4rem;
+  color: var(--primary);
+}
+
+/* Responsive : tout en colonne sur mobile */
+@media (max-width: 700px) {
+  .timeline-content {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-image img {
+    height: 200px;
+  }
+}
+
+/* Vidéo responsive */
+.video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #000;
+  margin-top: 1rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Cartes d’actualités */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  border-radius: 14px;
+  padding: 1rem;
+  background: var(--bg-elevated);
+  border: 1px solid rgba(123, 207, 139, 0.16);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-image {
+  width: 100%;
+  height: 170px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 0.6rem;
+}
+
+/* Liens dans le texte */
+a {
+  color: var(--accent);
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #ffffff;
+}
+
+/* Pied de page */
 footer {
-  border-top: 1px solid #e1e4ea;
+  border-top: 1px solid rgba(123, 207, 139, 0.25);
   padding: 1rem 1.5rem;
   font-size: 0.85rem;
   text-align: center;
-  color: #555;
-  background: #fafbfc;
+  color: #cbd3cf;
+  background: #090d0c;
   margin-top: 2rem;
 }
 
-@media (max-width: 600px) {
+/* Défilement doux vers les ancres */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
   header {
     padding: 0.8rem 1rem;
   }
 
+  nav {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+  }
+
   main {
-    padding: 1rem;
+    padding: 1.2rem 1rem 2rem;
   }
 }
