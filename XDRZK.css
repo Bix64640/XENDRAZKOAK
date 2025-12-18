@@ -1,10 +1,14 @@
 :root {
-  --bg: #0b1110;            /* fond général sombre */
+  --bg: #f5f5f5;            /* fond général sombre */
   --bg-elevated: #141c1b;   /* blocs en surépaisseur */
-  --primary: #7bcf8b;       /* vert principal (texte, titres) */
+  --primary: #2f8e41;       /* vert principal (texte, titres) */
   --primary-soft: #3a6b4a;  /* vert foncé pour détails */
   --accent: #e4f6ea;        /* blanc/vert très clair */
   --text: #f5f7f6;          /* texte principal clair */
+  --side-margin-width: 64px; /* largeur des marges latérales */
+  --side-margin-color: #000000; /* couleur des marges latérales */
+  --section-gap: 5.5rem; /* espace vertical entre les sections */
+  --para-video-gap: 3.5rem; /* espace entre paragraphe et vidéo */
 }
 
 /* Reset simple */
@@ -16,16 +20,20 @@ body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--text);
-  background: radial-gradient(circle at top, #182723 0, var(--bg) 45%);
   line-height: 1.5;
 }
 
 /* En-tête */
 header {
-  background: rgba(10, 16, 15, 0.9);
+  background: rgba(10, 16, 15, 0.85);
   backdrop-filter: blur(10px);
   color: #fff;
   padding: 0.9rem 1.5rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -64,20 +72,58 @@ nav a:hover {
 
 /* Contenu principal */
 main {
-  max-width: 960px;
+  max-width: max-content;
   margin: 0 auto;
-  padding: 1.6rem 1.5rem 2rem;
+  padding: 5rem calc(1.5rem + var(--side-margin-width)) 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 /* Sections */
 section {
-  margin-bottom: 2.5rem;
+  margin-bottom: var(--section-gap);
 }
+
+/* Bandes latérales rouges (marges décoratives) */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: var(--side-margin-width);
+  background: var(--side-margin-color);
+  z-index: 0;
+}
+body::before { left: 0; }
+body::after { right: 0; }
+
+/* Paragraphe en noir pour la section Informations */
+section#infos p {
+  color: #000000;
+  font-weight: 500;
+  text-align: center;
+}
+section#infos h4 {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+section#contacts p {
+  color: #000000;
+  font-weight: 500;
+}
+section#video p {
+  color: #000000;
+  font-weight: 500;
+}
+
 h1{
     text-align: center;
     color: var(--primary);
-    margin-bottom: 1rem;
+    margin-bottom: 3rem;
     font-weight: 700;
+    font-size: xx-large;
 }
 
 
@@ -85,15 +131,26 @@ h2 {
   color: var(--primary);
   margin-top: 0;
   font-weight: 700;
+  font-size: xx-large;
+  text-align: center;
 }
 h3 {
-  color: var red;;
+  color: var(--primary);
   margin-top: 0;
   font-weight: 600;
+  font-size: x-large;
 }
+h4 {
+  color: black;
+  margin-top: 0;
+  font-weight: 600;
+  font-size: x-large;
+}
+
 
 p {
   color: #dde3e1;
+  font-size: large;
 }
 
 /* Bandeau de présentation */
@@ -203,13 +260,14 @@ p {
 
 /* Vidéo responsive */
 .video-wrapper {
+  max-width: 1500px;
   position: relative;
-  padding-bottom: 56.25%; /* 16:9 */
+  padding-bottom: 40%; /* 16:9 */
   height: 0;
   overflow: hidden;
-  border-radius: 14px;
+  border-radius: 28px;
   background: #000;
-  margin-top: 1rem;
+  margin: var(--para-video-gap) auto 1rem;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
 }
 
@@ -258,6 +316,16 @@ a:hover {
   color: #ffffff;
 }
 
+/* Liens mail en noir dans la section Contacts */
+section#contacts a,
+section#contacts a:visited {
+  color: #000000;
+}
+section#contacts a:hover {
+  color: #000000;
+  text-decoration: underline;
+}
+
 /* Pied de page */
 footer {
   border-top: 1px solid rgba(123, 207, 139, 0.25);
@@ -288,6 +356,6 @@ html {
   }
 
   main {
-    padding: 1.2rem 1rem 2rem;
+    padding: 6rem 1rem 2rem;
   }
 }
