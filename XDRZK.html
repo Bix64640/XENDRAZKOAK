@@ -162,9 +162,41 @@
       </p>
     </section>
     <section>
-       <nav>
-      <a href="#presentation">Retour haut de page</a>
-    </nav>
+      <h2>Partenaires</h2>
+      <div class="partners-carousel">
+        <div class="partners-track" aria-label="Logos des partenaires">
+          <a class="partner-item" href="https://example.com/1" target="_blank" rel="noopener">
+            <img src="images/partners/logo1.png" alt="Partenaire 1">
+          </a>
+          <a class="partner-item" href="https://example.com/2" target="_blank" rel="noopener">
+            <img src="images/partners/logo2.png" alt="Partenaire 2">
+          </a>
+          <a class="partner-item" href="https://example.com/3" target="_blank" rel="noopener">
+            <img src="images/partners/logo3.png" alt="Partenaire 3">
+          </a>
+          <a class="partner-item" href="https://example.com/4" target="_blank" rel="noopener">
+            <img src="images/partners/logo4.png" alt="Partenaire 4">
+          </a>
+          <a class="partner-item" href="https://example.com/5" target="_blank" rel="noopener">
+            <img src="images/partners/logo5.png" alt="Partenaire 5">
+          </a>
+          <a class="partner-item" href="https://example.com/6" target="_blank" rel="noopener">
+            <img src="images/partners/logo6.png" alt="Partenaire 6">
+          </a>
+          <a class="partner-item" href="https://example.com/7" target="_blank" rel="noopener">
+            <img src="images/partners/logo7.png" alt="Partenaire 7">
+          </a>
+          <a class="partner-item" href="https://example.com/8" target="_blank" rel="noopener">
+            <img src="images/partners/logo8.png" alt="Partenaire 8">
+          </a>
+          <a class="partner-item" href="https://example.com/9" target="_blank" rel="noopener">
+            <img src="images/partners/logo9.png" alt="Partenaire 9">
+          </a>
+          <a class="partner-item" href="https://example.com/10" target="_blank" rel="noopener">
+            <img src="images/partners/logo10.png" alt="Partenaire 10">
+          </a>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -174,6 +206,75 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    // Partners auto-scroll
+    (function() {
+      const track = document.querySelector('.partners-track');
+      if (!track) return;
+
+      // duplicate contents to create seamless loop
+      track.innerHTML = track.innerHTML + track.innerHTML;
+
+      let speed = 0.5; // pixels per frame (adjust)
+      let rafId;
+      let isDown = false;
+      let startX;
+      let scrollLeftStart;
+
+      function step() {
+        if (!isDown) {
+          track.scrollLeft += speed;
+        }
+        // when we've scrolled past half (original content length), reset
+        const half = track.scrollWidth / 2;
+        if (track.scrollLeft >= half) track.scrollLeft -= half;
+        rafId = requestAnimationFrame(step);
+      }
+
+      track.addEventListener('mouseenter', () => {
+        cancelAnimationFrame(rafId);
+      });
+      track.addEventListener('mouseleave', () => {
+        rafId = requestAnimationFrame(step);
+      });
+
+      // dragging support
+      track.addEventListener('mousedown', (e) => {
+        isDown = true;
+        startX = e.pageX - track.offsetLeft;
+        scrollLeftStart = track.scrollLeft;
+        cancelAnimationFrame(rafId);
+      });
+      document.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        const x = e.pageX - track.offsetLeft;
+        const walk = (startX - x);
+        track.scrollLeft = scrollLeftStart + walk;
+      });
+      document.addEventListener('mouseup', () => {
+        if (!isDown) return;
+        isDown = false;
+        rafId = requestAnimationFrame(step);
+      });
+
+      // touch support for mobile
+      let touchStartX = 0;
+      let touchScrollStart = 0;
+      track.addEventListener('touchstart', (e) => {
+        cancelAnimationFrame(rafId);
+        touchStartX = e.touches[0].pageX;
+        touchScrollStart = track.scrollLeft;
+      }, {passive: true});
+      track.addEventListener('touchmove', (e) => {
+        const dx = e.touches[0].pageX - touchStartX;
+        track.scrollLeft = touchScrollStart - dx;
+      }, {passive: true});
+      track.addEventListener('touchend', () => {
+        rafId = requestAnimationFrame(step);
+      });
+
+      // start
+      rafId = requestAnimationFrame(step);
+    })();
   </script>
 </body>
 </html>
