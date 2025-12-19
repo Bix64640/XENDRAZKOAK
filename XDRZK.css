@@ -25,7 +25,7 @@ body {
   background-image: url("images/LOGO-XENDRAZKOAK.png");
   background-repeat: no-repeat;
   background-position: top center;
-  background-size: auto 1000px;
+  background-size: 90%;
 }
 
 /* En-tête */
@@ -295,20 +295,22 @@ p {
 /* Partners carousel */
 .partners-carousel {
   width: 100%;
-  overflow: hidden;
+  overflow: hidden; /* mobile: hidden to keep compact view */
   padding: 0.6rem 0;
   background: transparent;
+  -webkit-overflow-scrolling: touch;
 }
 .partners-track {
   display: flex;
   gap: 1.5rem;
   align-items: center;
+  justify-content: flex-start; /* left-align contents so scrolling works predictably */
   white-space: nowrap;
-  overflow-x: auto;
-  -ms-overflow-style: none; /* IE/Edge */
-  scrollbar-width: none; /* Firefox */
+  /* track itself is not the viewport; the carousel is the viewport */
   scroll-behavior: smooth;
   padding: 0.4rem 1rem;
+  width: max-content; /* shrink to content width */
+  margin: 0;
 }
 .partners-track::-webkit-scrollbar { display: none; }
 .partner-item {
@@ -326,18 +328,27 @@ p {
 }
 .partners-track:focus { outline: none; }
 
-/* CSS-only auto-scroll: translate the track left by 50% (duplicated content) */
-.partners-track {
-  animation: partners-scroll 28s linear infinite;
-}
-.partners-carousel:hover .partners-track,
-.partners-track:focus {
-  animation-play-state: paused;
-}
+/* Scrolling/loop handled by JavaScript (duplication + scrollLeft reset) */
+/* Removed CSS-only animation to avoid conflict with JS requestAnimationFrame auto-scroll. */
 
-@keyframes partners-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+/* Desktop: allow manual horizontal scroll and show a horizontal scrollbar */
+@media (min-width: 701px) {
+  .partners-carousel {
+    overflow-x: auto; /* show scrollbar on desktop */
+  }
+  /* styling the horizontal scrollbar (WebKit) */
+  .partners-carousel::-webkit-scrollbar {
+    height: 10px;
+  }
+  .partners-carousel::-webkit-scrollbar-thumb {
+    background: rgba(123, 207, 139, 0.28);
+    border-radius: 999px;
+  }
+  /* keep Firefox scrollbar slimmer */
+  .partners-carousel {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(123, 207, 139, 0.28) transparent;
+  }
 }
 
 
