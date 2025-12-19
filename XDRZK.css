@@ -89,7 +89,7 @@ section {
   margin-bottom: var(--section-gap);
 }
 
-/* Bandes latérales rouges (marges décoratives) */
+/* Bandes latérales noir (marges décoratives) */
 body::before,
 body::after {
   content: "";
@@ -193,6 +193,11 @@ p {
   color: #c4cec9;
   margin-top: 0.3rem;
 }
+/* Presentation: uniform spacing for all images inside the presentation section */
+#presentation img {
+  margin: 1.5rem;
+  display: block; /* avoid inline gaps and make margin predictable */
+}
 /* Timeline (histoire du club) */
 .timeline {
   margin-top: 1.5rem;
@@ -209,6 +214,7 @@ p {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.2rem;
+  /* vertically center the text next to the image on desktop/tablet */
   align-items: center;
   background: rgba(20, 28, 27, 0.9);
   border-radius: 14px;
@@ -218,10 +224,18 @@ p {
 
 .timeline-image img {
   width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 10px;
+  height: auto; /* allow the image to determine its own height */
+  max-height: 420px; /* prevent excessively tall images from breaking layout */
+  object-fit: contain; /* show the whole image inside its box */
+  border-radius: 0; /* remove radius here, apply to container for consistent clipping */
   filter: saturate(1.1) contrast(1.05);
+}
+
+/* Ensure the image container clips its contents to rounded corners so
+   every image gets the same corner radius regardless of its own pixels */
+.timeline-image {
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .timeline-text h3 {
@@ -233,6 +247,13 @@ p {
 .timeline-text p {
   margin: 0;
   color: #dde3e1;
+}
+
+/* center the text vertically within its grid cell so the paragraph aligns to the image center */
+.timeline-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* Position gauche/droite (alternance) */
@@ -256,6 +277,7 @@ p {
 @media (max-width: 700px) {
   .timeline-content {
     grid-template-columns: 1fr;
+    align-items: start; /* on mobile stacked layout, keep items aligned to top */
   }
 
   .timeline-image img {
